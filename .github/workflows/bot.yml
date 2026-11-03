@@ -1,7 +1,7 @@
 name: HBT Bot
 on:
   schedule:
-    - cron: '*/15 * * * *'  # Every 15 min
+    - cron: '*/15 * * * *'
   workflow_dispatch:
 
 jobs:
