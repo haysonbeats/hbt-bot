@@ -1,8 +1,9 @@
 name: HBT Bot
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '*/15 * * * *'  # Every 15 min
   workflow_dispatch:
+
 jobs:
   run:
     runs-on: ubuntu-latest
