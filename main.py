@@ -24,7 +24,7 @@ def resample_4h(df_15m):
     return df_15m.resample('4h').agg({'Open':'first','High':'max','Low':'min','Close':'last','Volume':'sum'}).dropna()
 
 def institutional_analysis(symbol_name, df_4h, df_15m):
-    if df_4h is None or df_15m is None or len(df_4h) < 50:
+    if df_4h is None or df_15m is None or len(df_4h) < 20:
         print(f"{symbol_name}: Not enough data")
         return None
     df_4h['EMA50'] = df_4h['Close'].ewm(span=50).mean()
@@ -120,7 +120,7 @@ def main():
         if state['sent'].get(name,0) >= 1:
             print(f"{name} already sent today, skipping")
             continue
-        df_15m = get_data(ticker, period="5d", interval="15m")
+        df_15m = get_data(ticker, period="60d", interval="15m")
         if df_15m is None:
             continue
         df_4h = resample_4h(df_15m)
