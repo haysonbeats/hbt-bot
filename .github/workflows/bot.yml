@@ -1,8 +1,11 @@
 name: HBT Bot
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '*/15 5-21 * * 1-5'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   run:
@@ -17,3 +20,10 @@ jobs:
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
+      - name: Save daily state
+        run: |
+          git config user.name "hbt-bot"
+          git config user.email "bot@hbt.com"
+          git add daily_state.json || true
+          git commit -m "update daily signal state" || true
+          git push || true
