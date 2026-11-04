@@ -20,6 +20,14 @@ jobs:
       - name: Install Requirements
         run: pip install -r requirements.txt
 
+      - name: Restore Sent Today Cache
+        uses: actions/cache@v4
+        with:
+          path: sent_today.txt
+          key: sent-${{ github.run_id }}
+          restore-keys: |
+            sent-
+
       - name: Run HBT Bot
         env:
           TELEGRAM_TOKEN: ${{ secrets.BOT_TOKEN }}
@@ -27,5 +35,7 @@ jobs:
         run: python main.py
 
       - name: Save Sent Today File
-        run: |
-          echo "done"
+        uses: actions/cache@v4
+        with:
+          path: sent_today.txt
+          key: sent-${{ github.run_id }}
