@@ -1,29 +1,35 @@
-name: HBT Bot
+name: HBT XAUUSD AUTO BOT
+
 on:
   schedule:
-    - cron: '*/15 5-21 * * 1-5'
-  workflow_dispatch:
-
-permissions:
-  contents: write
+    # Every 30 mins, 11AM - 6PM EAT (8AM - 3PM UTC), Mon-Fri
+    - cron: '*/30 8-15 * * 1-5'
+  workflow_dispatch: # Allows you to run manually with a button
 
 jobs:
-  run:
+  run-bot:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: pip install -r requirements.txt
-      - run: python main.py
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
-      - name: Save daily state
+
+      - name: Install Requirements
         run: |
-          git config user.name "hbt-bot"
-          git config user.email "bot@hbt.com"
-          git add daily_state.json || true
-          git commit -m "update daily signal state" || true
-          git push || true
+          pip install -r requirements.txt
+
+      - name: Run HBT Bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: |
+          python main.py
+
+      - name: Save Sent Today File
+        run: |
+          echo "Done"
