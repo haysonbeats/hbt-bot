@@ -160,11 +160,15 @@ def main():
     if not is_in_time_window():
         return "SLEEP"
     today = datetime.datetime.now(TIMEZONE).strftime("%Y-%m-%d")
+    # V4.3: 1 signal per day check
+    try:
+        with open("sent_today.txt", "r") as f:
+            if f.read().strip() == today:
+                print("Already sent today, skipping")
+                return "DONE - Already Sent 1 Today"
+    except:
+        pass
     live = get_live_price()
-    df = get_data()
-    if df is None:
-        return "NO DATA"
-    s = find_setup(df, live)
     if s is None:
         return "NO SETUP"
     chart = draw_chart(s)
@@ -187,6 +191,8 @@ def main():
 ⚠️ Wait for 15m rejection at zone.
 """
     send_msg(msg)
+        with open("sent_today.txt", "w") as f:
+        f.write(today)
     return "SENT"
 
 if __name__ == "__main__":
