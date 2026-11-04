@@ -2,14 +2,12 @@ name: HBT XAUUSD AUTO BOT
 
 on:
   schedule:
-    # Every 30 mins, 11AM - 6PM EAT (8AM - 3PM UTC), Mon-Fri
-    - cron: '*/30 8-15 * * 1-5'
-  workflow_dispatch: # Allows you to run manually with a button
+    - cron: '*/30 8-15 * * *'
+  workflow_dispatch:
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -20,16 +18,14 @@ jobs:
           python-version: '3.11'
 
       - name: Install Requirements
-        run: |
-          pip install -r requirements.txt
+        run: pip install -r requirements.txt
 
       - name: Run HBT Bot
         env:
-          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
-        run: |
-          python main.py
+        run: python main.py
 
       - name: Save Sent Today File
         run: |
-          echo "Done"
+          echo "done"
