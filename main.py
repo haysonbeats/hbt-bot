@@ -169,7 +169,8 @@ def main():
     except:
         pass
     live = get_live_price()
-    s = get_signal(live)
+    df = get_data()
+    s = find_setup(df, live)
     if s is None:
         return "NO SETUP"
     chart = draw_chart(s)
