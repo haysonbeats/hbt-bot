@@ -191,9 +191,9 @@ def main():
 ⚠️ Wait for 15m rejection at zone.
 """
     send_msg(msg)
-        with open("sent_today.txt", "w") as f:
+    with open("sent_today.txt", "w") as f:
         f.write(today)
-    return "SENT"
+    return "SENT"        
 
 if __name__ == "__main__":
     print(main())
