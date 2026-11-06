@@ -49,8 +49,13 @@ def get_data():
     return df
 
 def find_setup(df, live_price):
+    # SAFETY: Must be FIRST line, before any iloc
+    if df is None or df.empty or len(df) < 30:
+        print(f"Not enough candles: got {0 if df is None else len(df)}, need 30. Skipping.")
+        return None
     df = df.tail(60).copy().reset_index(drop=True)
     last_close = float(df['Close'].iloc[-1])
+    
 
     # USE LIVE PRICE as truth, not old candle close
     price = live_price if live_price else last_close
@@ -61,7 +66,7 @@ def find_setup(df, live_price):
     recent_low = float(df['Low'].iloc[-30:].min())
 
     # Trend from last 20 candles
-    start_price = float(df['Close'].iloc[-20])
+    start_price = float(df['Close'].iloc[-20])  
     
     if price > start_price:
         bias = "BULLISH"
