@@ -96,8 +96,8 @@ def find_setup(df, live_price):
 
     # FALLBACK: if ob_high is None or ob_low is None:
     if ob_high is None or ob_low is None:
-    print("No OB near live price, skipping")
-    return None
+        print("No OB near live price, skipping")
+        return None
     
         
         
