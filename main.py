@@ -94,12 +94,15 @@ def find_setup(df, live_price):
             ob_low = float(df['Low'].iloc[i])
             break
 
-    # FALLBACK: If no OB near live price, make tight zone around live price
+    # FALLBACK: if ob_high is None or ob_low is None:
     if ob_high is None or ob_low is None:
-        print("No OB near live price, using live price zone")
-        ob_high = price + 5
-        ob_low = price - 5
-        reason += " | Zone Around Live Price"
+    print("No OB near live price, skipping")
+    return None
+    
+        
+        
+        
+        
 
     # --- V4.2 SAFETY CHECK: Entry must be within $15 of live price ---
     entry = (ob_high + ob_low) / 2
@@ -107,16 +110,15 @@ def find_setup(df, live_price):
     print(f"Entry: {entry} | Distance to live: {distance}")
 
     if distance > 15:
-        print("Entry too far from live price - REBUILDING around live price")
-        # Rebuild tight zone centered on live price pullback
-        if bias == "BULLISH":
-            ob_high = price + 3
-            ob_low = price - 9
-        else:
-            ob_high = price + 9
-            ob_low = price - 3
-        entry = (ob_high + ob_low) / 2
-        reason += " | Re-centered to Live Price"
+       print("Entry too far from live price, skipping")
+       return None
+        
+            
+        
+        
+        
+            
+    
 
     # Make OB max $12 wide for tight SL
     if (ob_high - ob_low) > 12:
