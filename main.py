@@ -33,7 +33,7 @@ def get_live_price():
     except:
         pass
     try:
-        df = yf.download("GC=F", period="1d", interval="1m", progress=False, auto_adjust=False)
+        df = yf.download("GC=F", period="2d", interval="1m", progress=False, auto_adjust=False)
         if not df.empty:
             return float(df['Close'].iloc[-1].iloc[0] if hasattr(df['Close'].iloc[-1], 'iloc') else df['Close'].iloc[-1])
     except:
@@ -41,7 +41,7 @@ def get_live_price():
     return None
 
 def get_data():
-    df = yf.download("GC=F", period="1d", interval="15m", progress=False, auto_adjust=False)
+    df = yf.download("GC=F", period="2d", interval="15m", progress=False, auto_adjust=False)
     if df.empty:
         return None
     df = df.reset_index()
